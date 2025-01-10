@@ -19,7 +19,7 @@ final class ViewController: UIViewController {
     
     @IBOutlet private weak var historyTextView: UITextView!
     
-    private var num: UInt = 0
+    private var counterValue: UInt = 0
     
     private var history: String = ""
     
@@ -30,9 +30,7 @@ final class ViewController: UIViewController {
         return dateFormatter.string(from: date)
     }
     
-    private var counterText: String {
-        "Значение счетчика: \(num)"
-    }
+    private var counterText: String { "Значение счетчика: \(counterValue)" }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,14 +53,14 @@ final class ViewController: UIViewController {
     }
     
     @IBAction private func incrementButtonDidTap(_ sender: Any) {
-        num += 1
+        counterValue += 1
         addToHistory(event: "значение изменено на +1")
         updateText()
     }
     
     @IBAction private func decrementButtonDidTap(_ sender: Any) {
-        if num > 0 {
-            num -= 1
+        if counterValue > 0 {
+            counterValue -= 1
             addToHistory(event: "значение изменено на -1")
         } else {
             addToHistory(event: "попытка уменьшить значение счётчика ниже 0")
@@ -71,7 +69,7 @@ final class ViewController: UIViewController {
     }
     
     @IBAction private func resetButtonDidTap(_ sender: Any) {
-        num = 0
+        counterValue = 0
         addToHistory(event: "значение сброшено")
         updateText()
     }
