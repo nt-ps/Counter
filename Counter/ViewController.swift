@@ -38,14 +38,20 @@ final class ViewController: UIViewController {
         historyTextView.layer.cornerRadius = 10.0;
         historyTextView.textContainerInset = UIEdgeInsets(top: 10.0, left: 10.0, bottom: 10.0, right: 10.0)
         
+        counterValue = UserDefaults.standard.object(forKey: "lastCounterValue") as? UInt ?? 0
+        history = UserDefaults.standard.string(forKey: "history") ?? ""
+        
         dateFormatter.dateFormat = "dd.MM.yy HH:mm:ss"
-        addToHistory(event: "начало подсчета")
+        addToHistory(event: "счетчик открыт")
         updateText()
     }
     
     private func updateText() {
         counterLabel.text = counterText
         historyTextView.text = history
+        
+        UserDefaults.standard.set(counterValue, forKey: "lastCounterValue")
+        UserDefaults.standard.set(history, forKey: "history")
     }
     
     private func addToHistory(event: String) {
