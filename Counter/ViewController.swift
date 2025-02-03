@@ -7,13 +7,71 @@
 
 import UIKit
 
-class ViewController: UIViewController {
-
+final class ViewController: UIViewController {
+    
+    @IBOutlet private weak var counterLabel: UILabel!
+    
+    @IBOutlet private weak var incrementButton: UIButton!
+    
+    @IBOutlet private weak var decrementButton: UIButton!
+    
+    @IBOutlet private weak var resetButton: UIButton!
+    
+    @IBOutlet private weak var historyTextView: UITextView!
+    
+    private var counterValue: UInt = 0
+    
+    private var history: String = ""
+    
+    private let dateFormatter: DateFormatter = DateFormatter()
+    
+    private var date: String {
+        let date = Date()
+        return dateFormatter.string(from: date)
+    }
+    
+    private var counterText: String { "Значение счетчика: \(counterValue)" }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
+        historyTextView.layer.cornerRadius = 10.0;
+        historyTextView.textContainerInset = UIEdgeInsets(top: 10.0, left: 10.0, bottom: 10.0, right: 10.0)
+        
+        dateFormatter.dateFormat = "dd.MM.yy HH:mm:ss"
+        addToHistory(event: "начало подсчета")
+        updateText()
     }
-
-
+    
+    private func updateText() {
+        counterLabel.text = counterText
+        historyTextView.text = history
+    }
+    
+    private func addToHistory(event: String) {
+        history = "\(date) - \(event)\n\(history)"
+    }
+    
+    @IBAction private func incrementButtonDidTap(_ sender: Any) {
+        counterValue += 1
+        addToHistory(event: "значение изменено на +1")
+        updateText()
+    }
+    
+    @IBAction private func decrementButtonDidTap(_ sender: Any) {
+        if counterValue > 0 {
+            counterValue -= 1
+            addToHistory(event: "значение изменено на -1")
+        } else {
+            addToHistory(event: "попытка уменьшить значение счётчика ниже 0")
+        }
+        updateText()
+    }
+    
+    @IBAction private func resetButtonDidTap(_ sender: Any) {
+        counterValue = 0
+        addToHistory(event: "значение сброшено")
+        updateText()
+    }
 }
 
